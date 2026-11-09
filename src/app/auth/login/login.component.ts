@@ -18,6 +18,20 @@ export class LoginComponent {
   constructor() {
     // The form is fully initialised after rendering
     afterNextRender(() => {
+      const savedForm = window.localStorage.getItem('saved-login-form');
+
+      if (savedForm) {
+        const loadedFormData = JSON.parse(savedForm)
+        const savedEmail = loadedFormData.email;
+
+        setTimeout(() => {
+          this.form()?.setValue({email: savedEmail, password: ''})
+        }, 1)
+
+        // OR
+        //this.form()?.controls['email'].setValue(savedEmail)
+      }
+
       const subscription$ = this.form()
         ?.valueChanges
         ?.pipe(debounceTime(500))
